@@ -7,4 +7,7 @@
         "${3rd}/love2d/library"
     ],
     "Lua.workspace.checkThirdParty": false,
+    "Lua.diagnostics.disable": [
+        "lowercase-global"
+    ],
 }
