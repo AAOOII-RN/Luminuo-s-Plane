@@ -11,21 +11,25 @@ function love.load()
     -- table[y][x]
     stage = {}
     stage.model = {
-        {1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1}
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
     }
     stage.colorList = {
         {1, 1, 1},
         {1, 0.4, 0.4},
         {0.4, 1, 0.4},
-        {0.4, 0.4, 1}
+        {0.4, 0.4, 1},
+        {0.4, 1, 1},
+        {1, 0.4, 1},
+        {1, 1, 0.4}
     }
+    stage.cellSize = 38
 end
 
 function randomizeStageModel()
@@ -60,14 +64,23 @@ function love.keypressed(kd)
     end
 end
 
-function love.draw()
-    player.body("fill", player.x, player.y, player.rad)
-    
+function love.draw()    
     -- The grid
     for y, row in ipairs(stage.model) do
         for x, tile in ipairs(row) do
             love.graphics.setColor(stage.colorList[tile])
-            love.graphics.rectangle("fill", (x-1)*50 + ww/2 - #stage.model*25, (y-1)*50 + wh/2 - #stage.model*25, 50, 50)
+
+            love.graphics.rectangle(
+            "fill", 
+            (x-1)*stage.cellSize + ww/2 - #stage.model[1]*stage.cellSize/2,
+            (y-1)*stage.cellSize + wh/2 - #stage.model*stage.cellSize/2, 
+            stage.cellSize, 
+            stage.cellSize
+        )
         end
     end
+
+    -- Player
+    love.graphics.setColor(0.5,0.5,1)
+    player.body("fill", player.x, player.y, player.rad)
 end
