@@ -1,6 +1,6 @@
 function love.load()
     ww, wh = love.window.getMode()
-
+    randomizeCooldown = 5
     -- Player info
     player = {}
     player.x = ww / 2
@@ -10,16 +10,16 @@ function love.load()
 
     -- table[y][x]
     stage = {}
-    stage.model = {
-        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-    }
+    stage.x, stage.y = ww/2, wh/2
+    stage.model = {}
+    stage.height, stage.width = 6, 6
+    for y = 1, stage.height do
+        stage.model[y] = {}
+        for x = 1, stage.width do
+            stage.model[y][x] = 1
+        end
+    end
+    stage.cellSize = 70
     stage.colorList = {
         {1, 1, 1},
         {1, 0.4, 0.4},
@@ -29,7 +29,6 @@ function love.load()
         {1, 0.4, 1},
         {1, 1, 0.4}
     }
-    stage.cellSize = 38
 end
 
 function randomizeStageModel()
@@ -42,7 +41,7 @@ end
 
 function love.update(dt)
     local kd = love.keyboard.isDown
-
+    randomizeCooldown = randomizeCooldown - 1 * dt
     -- Player Movement
     if kd("w") then
         player.y = player.y - 500 * dt
@@ -55,12 +54,10 @@ function love.update(dt)
     elseif kd("d") then
         player.x = player.x + 500 * dt
     end
-end
 
-function love.keypressed(kd)
-    -- Perform randomizeStageModel
-    if kd == "space" then
+    if randomizeCooldown <= 0 then
         randomizeStageModel()
+        randomizeCooldown = 5
     end
 end
 
@@ -72,8 +69,8 @@ function love.draw()
 
             love.graphics.rectangle(
             "fill", 
-            (x-1)*stage.cellSize + ww/2 - #stage.model[1]*stage.cellSize/2,
-            (y-1)*stage.cellSize + wh/2 - #stage.model*stage.cellSize/2, 
+            (x-1)*stage.cellSize + stage.x - #stage.model[1]*stage.cellSize/2,
+            (y-1)*stage.cellSize + stage.y - #stage.model*stage.cellSize/2, 
             stage.cellSize, 
             stage.cellSize
         )
@@ -83,4 +80,6 @@ function love.draw()
     -- Player
     love.graphics.setColor(0.5,0.5,1)
     player.body("fill", player.x, player.y, player.rad)
+
+    love.graphics.print(math.floor(randomizeCooldown))
 end
