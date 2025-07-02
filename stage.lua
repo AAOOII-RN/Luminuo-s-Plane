@@ -2,26 +2,26 @@ Stage = Object:extend()
 
 function Stage:new()
     -- table[y][x]
-    self.x, self.y = ww/2, wh/2
     self.model = {}
-    self.height, self.width = 6, 6
+    self.height, self.width = 6, 12
     for y = 1, self.height do
         self.model[y] = {}
         for x = 1, self.width do
             self.model[y][x] = 1
         end
     end
-    self.cellSize = 70
+    self.cellSize = 90
     self.colorList = {
-        {1, 1, 1},
-        {1, 0.4, 0.4},
-        {0.4, 1, 0.4},
-        {0.4, 0.4, 1},
-        {0.4, 1, 1},
-        {1, 0.4, 1},
-        {1, 1, 0.4}
+        {0.9, 0.9, 0.9},
+        {0.9, 0.4, 0.4},
+        {0.4, 0.9, 0.4},
+        {0.4, 0.4, 0.9},
+        {0.4, 0.9, 0.9},
+        {0.9, 0.4, 0.9},
+        {0.9, 0.9, 0.4}
     }
-
+    self.x, self.y = ww/2, wh/2
+    
     self.randomizeCooldown = 5
 end
 
@@ -31,6 +31,17 @@ function Stage:update(dt)
         self:randomizeStageModel()
         self.randomizeCooldown = 5
     end
+end
+
+function Stage:highlightCell()
+    love.graphics.setColor(0.9, 0.9, 1, 0.5)
+    love.graphics.rectangle(
+    "fill",
+    math.floor(player.x/stage.cellSize)*stage.cellSize,
+    math.floor(player.y/stage.cellSize)*stage.cellSize,
+    stage.cellSize,
+    stage.cellSize
+    )
 end
 
 function Stage:draw()
@@ -47,6 +58,8 @@ function Stage:draw()
         )
         end
     end
+
+    Stage:highlightCell()
 end
 
 function Stage:randomizeStageModel()
