@@ -9,18 +9,20 @@ function love.load()
     aid = Aid() -- I suck, so this helps
     player = Player()
     stage = Stage()
+
+    ticks = 0
 end
 
 function love.update(dt)
+    ticks = ticks + 1 * dt
     player:update(dt)
     stage:update(dt)
 end
 
-function love.draw()    
+function love.draw()
+    love.graphics.setBackgroundColor(0.4, 0.2, 0.2)
     stage:draw()
     player:draw()
 
-    love.graphics.print(aid:betweenLimit(1, math.floor((player.x - (stage.x - #stage.model[1]*stage.cellSize/2))/stage.cellSize)+1, #stage.model[1]))
-
-    love.graphics.print(aid:betweenLimit(1, math.floor((player.y - (stage.y - #stage.model*stage.cellSize/2))/stage.cellSize)+1, #stage.model), 20)
+    love.graphics.print(stage.randomizeCooldown .. "\n" .. stage.sc_correctCell .. "\n" .. stage.model[stage.playerY][stage.playerX] .. "\n" .. stage.selectCell)
 end
