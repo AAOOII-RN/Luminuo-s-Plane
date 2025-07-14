@@ -41,13 +41,12 @@ function Stage:update(dt)
     self.playerY = aid:betweenLimit(1, math.floor((player.y - (self.y - self.height*self.cellSize/2))/self.cellSize)+1, self.height)
 
     if self.randomizeCooldown <= 0 then
-        self:randomizeStageModel()
-        self.randomizeCooldown = 5
-        self.selectCell = math.random(#self.colorList)
-
         if self.model[self.playerY][self.playerX] == self.selectCell then
             self.sc_correctCell = self.sc_correctCell + 1
+            self.selectCell = math.random(#self.colorList)
         end
+        self:randomizeStageModel()
+        self.randomizeCooldown = 5
     end
 
 end

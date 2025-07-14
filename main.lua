@@ -4,6 +4,7 @@ require "player"
 require "stage"
 
 function love.load()   
+    nL = "\n"
     ww, wh = love.window.getMode()
 
     aid = Aid() -- I suck, so this helps
@@ -20,9 +21,9 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.setBackgroundColor(0.4, 0.2, 0.2)
+    love.graphics.setBackgroundColor(0.1, 0.1, 0.1)
     stage:draw()
     player:draw()
 
-    love.graphics.print(stage.randomizeCooldown .. "\n" .. stage.sc_correctCell .. "\n" .. stage.model[stage.playerY][stage.playerX] .. "\n" .. stage.selectCell)
+    love.graphics.print(stage.sc_correctCell)
 end
