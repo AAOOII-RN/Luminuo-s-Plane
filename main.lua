@@ -4,7 +4,8 @@ require "player"
 require "stage"
 
 function love.load()   
-    nL = "\n"
+    nL = "\n" -- Debug uses
+
     ww, wh = love.window.getMode()
 
     aid = Aid() -- I suck, so this helps
@@ -25,5 +26,5 @@ function love.draw()
     stage:draw()
     player:draw()
 
-    love.graphics.print(stage.sc_correctCell)
+    love.graphics.print(stage.roundWhile)
 end

@@ -25,41 +25,37 @@ function Stage:new()
     self.x, self.y = ww/2, 5*wh/8
     
     -- STAGE STATE
-    self.randomizeCooldown = 5
+    self.roundWhile = 7 -- REMEMBER TO CHANGE THE OTHER VARIABLE IN THE UPDATE SECTION (8970)
     self.playerCell = {}
 
     -- SELCECTED CELLS
-    self.selectCell = 1
+    self.sc = 1 -- sc = selected cell
     self.sc_size = 45
     self.sc_x, self.sc_y = ww/2, wh/4
-    self.sc_correctCell = 0
+    self.sc_winCount = 0
 end
 
 function Stage:update(dt)
-    self.randomizeCooldown = self.randomizeCooldown - 1 * dt
+    self.roundWhile = self.roundWhile - 1 * dt
     self.playerX = aid:betweenLimit(1, math.floor((player.x - (self.x - self.width*self.cellSize/2))/self.cellSize)+1, self.width)
     self.playerY = aid:betweenLimit(1, math.floor((player.y - (self.y - self.height*self.cellSize/2))/self.cellSize)+1, self.height)
 
-    if self.randomizeCooldown <= 0 then
-        if self.model[self.playerY][self.playerX] == self.selectCell then
-            self.sc_correctCell = self.sc_correctCell + 1
-            self.selectCell = math.random(#self.colorList)
+    if math.floor(self.roundWhile) == 3 then
+        
+    elseif math.floor(self.roundWhile) == 0 then
+        if self.model[self.playerY][self.playerX] == self.sc then
+            self.sc_winCount = self.sc_winCount + 1
+            self.sc = math.random(#self.colorList)
         end
         self:randomizeStageModel()
-        self.randomizeCooldown = 5
+        self.roundWhile = 7 -- HERE!!!! (8970)
     end
-
 end
 
 function Stage:draw()
     for y, row in ipairs(self.model) do
         for x, tile in ipairs(row) do
             -- Highlights the cell where the player stands
-            if y == self.playerY and x == self.playerX then
-                self.colorList[tile][4] = 0.75
-            else
-                self.colorList[tile][4] = 1
-            end
             love.graphics.setColor(self.colorList[tile])
 
             -- builds the stage
@@ -73,7 +69,7 @@ function Stage:draw()
         end
     end
 
-    love.graphics.setColor(self.colorList[self.selectCell])
+    love.graphics.setColor(self.colorList[self.sc])
     love.graphics.rectangle("fill", self.sc_x, self.sc_y, self.sc_size, self.sc_size)
 end
 
